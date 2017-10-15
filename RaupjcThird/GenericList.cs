@@ -1,30 +1,31 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RaupjcFirst
+namespace RaupjcThird
 {
-    public class IntegerList : IIntegerList
+    public class GenericList <T> : IGenericList<T>
     {
-        private int?[] _internalStorage;
+        private T[] _internalStorage;
 
-        public IntegerList()
+        public GenericList()
         {
-            _internalStorage = new int?[4];
+            _internalStorage = new T[4];
         }
 
-        public IntegerList(int sizeCount)
+        public GenericList(int sizeCount)
         {
-            _internalStorage = new int?[sizeCount];
+            _internalStorage = new T[sizeCount];
         }
 
-        public void Add(int item)
+        public void Add(T item)
         {
             if (Count == _internalStorage.Length)
             {
-                var newInternalStorage = new int?[_internalStorage.Length + 4];
+                var newInternalStorage = new T[_internalStorage.Length + 4];
                 for (var position = 0; position < Count; position++)
                 {
                     newInternalStorage[position] = _internalStorage[position];
@@ -38,11 +39,12 @@ namespace RaupjcFirst
             }
             Count++;
         }
-        public bool Remove(int item)
+
+        public bool Remove(T item)
         {
             for (var index = 0; index < Count; index++)
             {
-                if (_internalStorage[index] == item)
+                if (_internalStorage[index].Equals(item))
                     return RemoveAt(index);
             }
             return false;
@@ -54,7 +56,7 @@ namespace RaupjcFirst
                 throw new IndexOutOfRangeException();
             if (_internalStorage.Length - Count == 5)
             {
-                var newInternalStorage = new int?[_internalStorage.Length - 1];
+                var newInternalStorage = new T[_internalStorage.Length - 1];
                 for (var position = 0; position < Count; position++)
                 {
                     if (position == index)
@@ -67,26 +69,25 @@ namespace RaupjcFirst
             {
                 for (var position = index; position < Count - 1; position++)
                 {
-                   _internalStorage[position] = _internalStorage[position + 1];
+                    _internalStorage[position] = _internalStorage[position + 1];
                 }
-                _internalStorage[Count - 1] = null;
             }
             Count--;
             return true;
         }
 
-        public int GetElement(int index)
+        public T GetElement(int index)
         {
             if (index >= Count || index < 0)
                 throw new IndexOutOfRangeException();
-            return _internalStorage[index].Value;
+            return _internalStorage[index];
         }
 
-        public int IndexOf(int item)
+        public int IndexOf(T item)
         {
             for (var index = 0; index < Count; index++)
             {
-                if (_internalStorage[index] == item)
+                if (_internalStorage[index].Equals(item))
                     return index;
             }
             return -1;
@@ -96,19 +97,28 @@ namespace RaupjcFirst
 
         public void Clear()
         {
-            _internalStorage = new int?[4];
+            _internalStorage = new T[4];
             Count = 0;
         }
 
-        public bool Contains(int item)
+        public bool Contains(T item)
         {
-            foreach (var element in _internalStorage)
+            for (var index = 0; index < Count; index++)
             {
-                if (element == item)
+                if (_internalStorage[index].Equals(item))
                     return true;
             }
             return false;
         }
 
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new GenericListEnumerator<T>(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace RaupjcThird
         {
             if (Count == _internalStorage.Length)
             {
-                var newInternalStorage = new T[_internalStorage.Length + 4];
+                var newInternalStorage = new T[_internalStorage.Length*2];
                 for (var position = 0; position < Count; position++)
                 {
                     newInternalStorage[position] = _internalStorage[position];
@@ -97,7 +97,7 @@ namespace RaupjcThird
 
         public void Clear()
         {
-            _internalStorage = new T[4];
+            _internalStorage = new T[Count];
             Count = 0;
         }
 

@@ -79,7 +79,7 @@ namespace RaupjcThird
         public T GetElement(int index)
         {
             if (index >= Count || index < 0)
-                throw new IndexOutOfRangeException();
+                throw new IndexOutOfRangeException(Count.ToString() + ":" + index.ToString());
             return _internalStorage[index];
         }
 

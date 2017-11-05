@@ -10,7 +10,7 @@ namespace RaupjcThird
     public class GenericListEnumerator<T> : IEnumerator<T>
     {
         private IGenericList<T> _genericList;
-        public int position = 0;
+        private int _position = -1;
 
         public GenericListEnumerator(IGenericList<T> genericList)
         {
@@ -20,23 +20,23 @@ namespace RaupjcThird
         public void Dispose()
         {
             _genericList = null;
-            position = 0;
+            _position = 0;
         }
 
         public bool MoveNext()
         {
-            if (position == _genericList.Count - 1)
+            if (_position >= _genericList.Count - 1)
                 return false;
-            position++;
+            _position++;
             return true;
         }
 
         public void Reset()
         {
-            position = 0;
+            _position = 0;
         }
 
-        public T Current => _genericList.GetElement(position);
+        public T Current => _genericList.GetElement(_position);
 
         object IEnumerator.Current => Current;
     }
